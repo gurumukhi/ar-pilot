@@ -1,0 +1,90 @@
+<html>
+  <head>
+    <style>
+      .headr {
+        margin-bottom: 5px;
+      }
+      .fancy {
+        text-align: center;
+        font-size: large;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+      }
+      ol {
+        text-align: left;
+        padding-left: 20%;
+      }
+      p {
+        font-weight: 500;
+      }
+    </style>
+    <script>
+      const print = (km, value) => {
+        let res;
+        if (!value.length) {
+          res = `<p>No one found in ${km} KM area</p>`;
+        } else {
+          res = `<p>People found in ${km} KM area</p><ol>`;
+          value.map((v) => (res += `<li>${v.name} (${v.emailId})</li>`));
+          res += "</ol>";
+        }
+        document.getElementById("result").innerHTML = res;
+      };
+      const click1 = (km) => {
+        const url = `https://localhost:44340/api/Connectpeople/connectin${km}kmrange?UserID=PRITY`;
+        console.log(url);
+        fetch(`${url}`, {
+          method: "GET",
+          //   body: JSON.stringify({
+          //     UserID: "PRITY",
+          //   }),
+        })
+          .then((response) => response.json())
+          .then((value) => {
+            print(km, value);
+          })
+          .catch((err) => {
+            console.warn(err);
+            print(km, [
+              { name: "Roshon", emailId: "roshong@gmail.com" },
+              { name: "Pritima", emailId: "pritima_sharma94@yahoo.co.in" },
+            ]);
+          });
+      };
+    </script>
+  </head>
+  <body class="fancy" style="margin-left: 10%; margin-right: 10%;">
+    <div>
+      <div class="headr">Fetch People From</div>
+      <button
+        style="border-radius: 8px; padding: 8px; margin: 8px;"
+        class="fancy"
+        onclick="click1(5)"
+      >
+        5 KM
+      </button>
+      <button
+        style="border-radius: 8px; padding: 8px; margin: 8px;"
+        class="fancy"
+        onclick="click1(10)"
+      >
+        10 KM
+      </button>
+      <button
+        style="border-radius: 8px; padding: 8px; margin: 8px;"
+        class="fancy"
+        onclick="click1(20)"
+      >
+        20 KM
+      </button>
+      <button
+        style="border-radius: 8px; padding: 8px; margin: 8px;"
+        class="fancy"
+        onclick="click1(30)"
+      >
+        30 KM
+      </button>
+    </div>
+    <hr />
+    <div id="result"></div>
+  </body>
+</html>
